@@ -75,9 +75,9 @@ def train(env, model, optimizer, replay_buffer, device=device):
             if done:
                 episode_rewards.append(episode_reward)
                 break
-        if episode+1 % 50 == 0:
-            path = os.path.join(MODEL_SAVE_PATH, f"pong_episode_{episode+1}.pth")
-            print(f"Saving weights at Epoch {epoch + 1} ...")
+        if (episode+1) % 100 == 0 or episode+1 == 10:
+            path = os.path.join(MODEL_SAVE_PATH, f"{env.spec.id}_episode_{episode+1}.pth")
+            print(f"Saving weights at Episode {episode+1} ...")
             torch.save(model.state_dict(), path)
     env.close()
 

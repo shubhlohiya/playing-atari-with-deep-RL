@@ -8,7 +8,7 @@ cv2.ocl.setUseOpenCL(False) # disable GPU usage by OpenCV
 def make_atari_env(env_id, episodic_life=True, clip_rewards=True, stack_frames=True, scale=False):
     """Configure the atari environment."""
     env = gym.make(env_id)
-    assert 'NoFrameskip' in env.spec.id
+    # assert 'NoFrameskip' in env.spec.id
     if episodic_life:
         env = EpisodicLifeEnv(env)
     env = NoopResetEnv(env, noop_max=30)
