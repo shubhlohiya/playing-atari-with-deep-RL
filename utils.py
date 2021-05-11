@@ -2,6 +2,7 @@ import os
 import numpy as np
 import torch
 from Param import *
+import matplotlib.pyplot as plt
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -87,7 +88,7 @@ def test(env, model, episodes, render=True, device=device, context=""):
         state = env.reset()
         episode_reward = 0.0
         while True:
-            action = model.act(state, epsilon=0, device)
+            action = model.act(state, 0, device)
             next_state, reward, done, _ = env.step(action)
 
             if render:
