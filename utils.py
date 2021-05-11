@@ -3,6 +3,7 @@ import numpy as np
 import torch
 from Param import *
 import matplotlib.pyplot as plt
+from IPython.display import clear_output
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -66,10 +67,10 @@ def train(env, model, optimizer, replay_buffer, device=device):
                 loss.backward()
                 optimizer.step()
 
-                losses.append(loss.data[0])
+                losses.append(loss.item())
 
             if steps_done % 10000 == 0:
-                plot_stats(frame_idx, episode_rewards, losses)
+                plot_stats(steps_done, episode_rewards, losses)
 
             if done:
                 episode_rewards.append(episode_reward)
