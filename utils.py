@@ -2,6 +2,7 @@ import os
 import numpy as np
 import torch
 from Param import *
+import matplotlib.pyplot as plt
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
