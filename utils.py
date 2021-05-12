@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import torch
+import gym
 from Param import *
 import matplotlib.pyplot as plt
 from IPython.display import clear_output
