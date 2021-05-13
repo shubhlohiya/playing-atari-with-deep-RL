@@ -18,7 +18,7 @@ def plot_stats(frame_idx, rewards, losses):
     plt.plot(losses)
     plt.show()
 
-def compute_loss_modif(current_model,target_model, replay_buffer, batch_size, gamma):
+def compute_loss_modif(current_model,target_model, replay_buffer, batch_size, gamma, device=device):
     state, action, reward, next_state, done = replay_buffer.sample(batch_size)
 
     state = torch.FloatTensor(np.float32(state)).to(device)
@@ -60,7 +60,7 @@ def train_modif(env, current_model,target_model, optimizer, replay_buffer, devic
             episode_reward += reward
 
             if len(replay_buffer) > INITIAL_MEMORY:
-                loss = compute_loss_modif(current_model,target_model, replay_buffer, BATCH_SIZE, GAMMA)
+                loss = compute_loss_modif(current_model,target_model, replay_buffer, BATCH_SIZE, GAMMA, device)
 
                 # Optimization step
                 optimizer.zero_grad()
@@ -77,7 +77,7 @@ def train_modif(env, current_model,target_model, optimizer, replay_buffer, devic
             if done:
                 episode_rewards.append(episode_reward)
                 break
-        if (episode+1) % 100 == 0 or episode+1 == 10:
+        if (episode+1) % 500 == 0:
             curr_path = os.path.join(MODEL_SAVE_PATH, f"{env.spec.id}_curr_episode_{episode+1}.pth")
             target_path = os.path.join(MODEL_SAVE_PATH, f"{env.spec.id}_target_episode_{episode+1}.pth")
             print(f"Saving weights at Episode {episode+1} ...")
@@ -86,7 +86,7 @@ def train_modif(env, current_model,target_model, optimizer, replay_buffer, devic
     env.close()
 
 def test_modif(env, model, episodes, render=True, device=device, context=""):
-    env = gym.wrappers.Monitor(env, VIDEO_SAVE_PATH + f'dqn_pong_video_{context}')
+    env = gym.wrappers.Monitor(env, VIDEO_SAVE_PATH + f'ddqn_{env.spec.id}_video_{context}')
     model.eval()
     for episode in range(episodes):
         state = env.reset()
